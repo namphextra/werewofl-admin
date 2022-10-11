@@ -1,0 +1,37 @@
+@use "@carbon/layout";
+
+$mapSpacingAttr: (
+  margin: m,
+  padding: p,
+);
+$mapSpacingPositionAttr: (
+  top: t,
+  bottom: b,
+  left: l,
+  right: r,
+  vertical: y,
+  horizontal: x,
+);
+
+$spacingMap: (
+  1: layout.$spacing,
+  2: layout.$spacing-01,
+  3: layout.$spacing-02,
+  4: layout.$spacing-03,
+  5: layout.$spacing-04,
+);
+
+// $spacingList: layout.$spacing, layout.$spacing-01, layout.$spacing-02, layout.$spacing-03, layout.$spacing-04,
+//   layout.$spacing-05, layout.$spacing-06, layout.$spacing-07, layout.$spacing-08, layout.$spacing-09, layout.$spacing-10,
+//   layout.$spacing-11, layout.$spacing-12, layout.$spacing-13;
+
+@mixin createSpacing($attr, $position) {
+  @debug 'map get attr: #{map-get($spacingMap, 1)}';
+  @for $i from 1 to 5 {
+    .#{map-get($mapSpacingAttr, $attr)}#{map-get($mapSpacingPositionAttr, $position)}#{$i} {
+      #{$attr}: map-get($spacingMap, $i);
+    }
+  }
+}
+
+@include createSpacing(margin, top);

@@ -1,0 +1,48 @@
+@use "@carbon/layout";
+
+$mapSpacingAttr: (
+  margin: m,
+  padding: p,
+);
+$mapSpacingPositionAttr: (
+  top: t,
+  bottom: b,
+  left: l,
+  right: r,
+  vertical: y,
+  horizontal: x,
+);
+
+$spacingList: layout.$spacing-01, layout.$spacing-02, layout.$spacing-03, layout.$spacing-04,
+  layout.$spacing-05, layout.$spacing-06, layout.$spacing-07, layout.$spacing-08, layout.$spacing-09, layout.$spacing-10,
+  layout.$spacing-11, layout.$spacing-12, layout.$spacing-13;
+
+@mixin createSpacing($attr, $position) {
+  @for $i from 1 to 13 {
+    @if $position == vertical {
+      .#{map-get($mapSpacingAttr, $attr)}y {
+        #{$attr}-top: nth($list: $spacingList, $n: $i);
+        #{$attr}-bottom: nth($list: $spacingList, $n: $i);
+      }  
+    }
+    @if $position == horizontal {
+      .#{map-get($mapSpacingAttr, $attr)}x {
+        #{$attr}-left: nth($list: $spacingList, $n: $i);
+        #{$attr}-right: nth($list: $spacingList, $n: $i);
+      }  
+    }
+    .#{map-get($mapSpacingAttr, $attr)}#{map-get($mapSpacingPositionAttr, $position)}#{$i} {
+      #{$attr}-#{$position}: nth($list: $spacingList, $n: $i);
+    }
+  }
+}
+
+@include createSpacing(margin, top);
+@include createSpacing(margin, bottom);
+@include createSpacing(margin, left);
+@include createSpacing(margin, right);
+
+@include createSpacing(padding, top);
+@include createSpacing(padding, bottom);
+@include createSpacing(padding, left);
+@include createSpacing(padding, right);
