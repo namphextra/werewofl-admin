@@ -11,6 +11,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'standard-with-typescript',
+    'plugin:@blueprintjs/recommended',
+    "@blueprintjs/eslint-config",
     'prettier'
   ],
   overrides: [
@@ -28,7 +30,8 @@ module.exports = {
   plugins: [
     'react',
     '@typescript-eslint',
-    'prettier'
+    'prettier',
+    '@blueprintjs'
   ],
   rules: {
     "@typescript-eslint/no-empty-function": "empty"

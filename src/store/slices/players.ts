@@ -1,17 +1,23 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
-interface Player {
-  name: string
-  charactor?: string
-}
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import {db} from '@/indexedServer'
+import {Player} from '@/indexedServer/models/player'
 
 interface State {
   players: Player[]
 }
 
+type AssignCharactorPayload = {
+  charactor: string
+  index: number
+}
+
 const initialState: State = {
   players: []
 }
+
+export const fetchPlayers = createAsyncThunk('player/fetchPlayers', async () => {
+  return await db.getPlayers()
+})
 
 export const playerSlice = createSlice({
   name: 'player',
@@ -22,9 +28,17 @@ export const playerSlice = createSlice({
     },
     removePlayer: (state, actions: PayloadAction<number>) => {
       state.players.splice(actions.payload, 1)
+    },
+    assignCharactor: (state, actions: PayloadAction<AssignCharactorPayload>) => {
+      state.players[actions.payload.index].charactor = actions.payload.charactor
     }
-  }
+  },
+  extraReducers(builder) {
+    builder.addCase(fetchPlayers.fulfilled, (state, action) => {
+      state.players = action.payload
+    })
+  },
 })
 
-export const { addPlayer, removePlayer } = playerSlice.actions
+export const { addPlayer, removePlayer, assignCharactor } = playerSlice.actions
 export default playerSlice.reducer

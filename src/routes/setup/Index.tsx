@@ -1,17 +1,10 @@
-import React, { KeyboardEvent, ReactElement, useState } from 'react'
+import React, { KeyboardEvent, ReactElement, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Button,
-  TextInput,
-  OrderedList,
-  ListItem,
-  InlineNotification,
-} from 'carbon-components-react'
-
+import { Button, InputGroup, Icon } from '@blueprintjs/core'
 import { TrashCan } from '@carbon/icons-react'
 import { useAppSelector, useAppDispatch } from '@store/hooks'
-import { addPlayer, removePlayer } from '@store/slices/players'
-import IndexedDB from '../../indexedServer/index'
+import { addPlayer, removePlayer, fetchPlayers } from '@store/slices/players'
+import { db } from '../../indexedServer/index'
 
 function Setup(): ReactElement {
   const navigate = useNavigate()
@@ -19,16 +12,22 @@ function Setup(): ReactElement {
   const players = useAppSelector((state) => state.player.players)
   const [player, setPlayer] = useState('')
   const [showNoti, setshowNoti] = useState(false)
-  const IndexedDBInstance = IndexedDB.getInstance()
 
   const onAddPlayer = (): void => {
     if (player === '') {
       setshowNoti(true)
       return
     }
-    IndexedDBInstance.addPlayer(player)
+    db.addPlayer(player)
     dispatch(addPlayer(player))
+    dispatch(fetchPlayers())
     setPlayer('')
+  }
+
+  const onRemovePlayer = (id: number): void => {
+    db.removePlayer(id)
+    dispatch(removePlayer(id))
+    dispatch(fetchPlayers())
   }
 
   const handleKeyDown = (e: KeyboardEvent): void => {
@@ -37,43 +36,46 @@ function Setup(): ReactElement {
     }
   }
 
+  const init = async () => {
+    dispatch(fetchPlayers())
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
   return (
     <>
-      {showNoti && (
-        <InlineNotification title="Empty player name" kind="error" />
-      )}
       <div className="p4">
-        <TextInput
+        <InputGroup
           id="addPlayer"
-          labelText=""
           value={player}
           onChange={(e) => setPlayer(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        <div className="actions__container">
+        {showNoti && <div className="text-red-500">Empty player name</div>}
+        <div className="actions__container mb-4">
           <Button
-            className="mt4 mr4"
+            className="mt-4 mr-4"
             onClick={() => onAddPlayer()}
-            kind="tertiary"
+            intent="primary"
           >
             Add player
           </Button>
-          <Button className="mt4" onClick={() => navigate('assignPlayer')}>
-            Assign charactor to player
+          <Button className="mt-4" onClick={() => navigate('selectRoles')}>
+            Go to Select roles
           </Button>
         </div>
-        <OrderedList className="mt5 pl6">
-          {players.map((p, i) => (
-            <ListItem key={i} className="d-flex mb3 align-items-center">
-              {p.name}{' '}
-              <TrashCan
-                className="ml3"
-                size={16}
-                onClick={() => dispatch(removePlayer(i))}
-              />
-            </ListItem>
-          ))}
-        </OrderedList>
+        {players.map((p) => (
+          <div key={p.id} className="d-flex mb-3 align-items-center">
+            {p.name}{' '}
+            <Icon
+              icon="trash"
+              className="ml3"
+              onClick={() => onRemovePlayer(p.id || 0)}
+            />
+          </div>
+        ))}
       </div>
     </>
   )

@@ -1,54 +1,30 @@
-import { openDB, DBSchema, IDBPDatabase, IDBPObjectStore } from 'idb'
+import Dexie, {Table} from 'dexie'
+import {Player} from './models/player'
 
-interface PlayerDB extends DBSchema {
-  players: {
-    value: string
-    key: number
-  }
-}
+class AppDexie extends Dexie {
+  players!: Table<Player>
 
-class Player {
-  db: IDBPDatabase<PlayerDB>
-  objectStore: IDBPObjectStore<PlayerDB>
-  private static instance: Player
-
-  private constructor() {}
-
-  private async setup(): Promise<void> {
-    this.db = await openDB('players', 1, {
-      upgrade(db) {
-        db.createObjectStore('players', {
-          keyPath: 'id',
-          autoIncrement: true,
-        })
-      },
+  constructor() {
+    super('werewolf_admin')
+    this.version(1).stores({
+      players: '++id, name, charactor'
     })
-    // this.createPlayer()
   }
 
-  // private createPlayer(): void {
-  //   this.objectStore = this.db.createObjectStore('players', {
-  //     keyPath: 'id',
-  //     autoIncrement: true,
-  //   })
-  // }
-
+  /**
+   * addPlayer
+   */
   public async addPlayer(player: string) {
-    await this.db.add('players', player, 'name')
+    await this.players.add({name: player})
   }
-
-  // public getDB(): IDBPDatabase<PlayerDB> {
-  //   return this.db
-  // }
-
-  public static getInstance(): Player {
-    if (Player.instance === undefined) {
-      Player.instance = new Player()
-      Player.instance.setup()
-    }
-
-    return Player.instance
+  
+  public async removePlayer(id: number) {
+    await this.players.delete(id)
+  }
+  
+  public async getPlayers() {
+    return await this.players.toArray()
   }
 }
 
-export default Player
+export const db = new AppDexie()

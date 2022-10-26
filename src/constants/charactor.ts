@@ -34,8 +34,15 @@ export const oneNightWakeCharacters = [
 export const charactersCanKill = ['Werewolf', 'Witch', 'Hunter']
 export const charactersCanSave = ['Bodyguard', 'Witch']
 
+export type Charactor = {
+  title: string
+  vietnamesse: string
+  point: number
+  detail: string
+}
+
 // Phe dân
-export const list1 = [
+export const list1: Charactor[] = [
   {
     title: 'Apprentice Seer',
     vietnamesse: 'Tiên tri tập sự',
@@ -172,7 +179,7 @@ export const list1 = [
   }
 ]
 
-export const list2 = [
+export const list2: Charactor[] = [
   {
     title: 'Minion',
     vietnamesse: 'Kẻ phản bội',
@@ -209,7 +216,7 @@ export const list2 = [
   }
 ]
 
-export const list3 = [
+export const list3: Charactor[] = [
   {
     title: 'Cult Leader',
     vietnamesse: 'Trưởng giáo phái',
