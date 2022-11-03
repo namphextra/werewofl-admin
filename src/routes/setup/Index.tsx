@@ -1,7 +1,6 @@
 import React, { KeyboardEvent, ReactElement, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, InputGroup, Icon } from '@blueprintjs/core'
-import { TrashCan } from '@carbon/icons-react'
 import { useAppSelector, useAppDispatch } from '@store/hooks'
 import { addPlayer, removePlayer, fetchPlayers } from '@store/slices/players'
 import { db } from '../../indexedServer/index'
