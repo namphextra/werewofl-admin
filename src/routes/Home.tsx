@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button } from 'carbon-components-react'
+import { Button } from '@blueprintjs/core'
 
-function App (): ReactElement {
+function App(): ReactElement {
   const navigate = useNavigate()
   return (
     <div className="App">

@@ -11,6 +11,12 @@ type AssignCharactorPayload = {
   index: number
 }
 
+type UpdateActionPayload = {
+  index: number
+  action: string
+  value: any
+}
+
 const initialState: State = {
   players: []
 }
@@ -31,6 +37,9 @@ export const playerSlice = createSlice({
     },
     assignCharactor: (state, actions: PayloadAction<AssignCharactorPayload>) => {
       state.players[actions.payload.index].charactor = actions.payload.charactor
+    },
+    setAction: (state, actions: PayloadAction<UpdateActionPayload>) => {
+      // state.players[actions.payload.index].action[actions.payload.action] = actions.payload.value
     }
   },
   extraReducers(builder) {

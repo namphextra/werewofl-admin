@@ -2,9 +2,8 @@ import React from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import Home from './routes/Home'
 import Setup from './routes/setup/Index'
-import AssignPlayers from './routes/setup/AssignPlayers'
 import SelectRoles from './routes/setup/SelectRoles'
-import Play from './routes/Play'
+import OnGame from './routes/OnGame'
 
 export const router = createBrowserRouter([
   {
@@ -16,15 +15,11 @@ export const router = createBrowserRouter([
     element: <Setup />,
   },
   {
-    path: '/setup/assignPlayer',
-    element: <AssignPlayers />,
-  },
-  {
     path: '/setup/selectRoles',
     element: <SelectRoles />,
   },
   {
-    path: '/play',
-    element: <Play />,
+    path: '/onGame',
+    element: <OnGame />,
   },
 ])

@@ -34,6 +34,6 @@ module.exports = {
     '@blueprintjs'
   ],
   rules: {
-    "@typescript-eslint/no-empty-function": "empty"
+    "@typescript-eslint/no-empty-function": 0
   }
 };

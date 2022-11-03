@@ -7,15 +7,16 @@ import reportWebVitals from './reportWebVitals'
 import { router } from './router'
 import './assets/index.scss'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-)
+import Header from './components/Header'
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <RouterProvider router={router}/>
+      <Header />
+      <RouterProvider router={router} />
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 )
 
 // If you want to start measuring performance in your app, pass a function

@@ -149,9 +149,9 @@ function SelectRoles(): ReactElement {
         <Button
           intent="primary"
           className="ml-4"
-          onClick={() => navigate('/setup/assignPlayer')}
+          onClick={() => navigate('/onGame')}
         >
-          Go to assign role to players
+          Play the game
         </Button>
         <p>Players: {players.length}</p>
         <Tabs selectedTabId={tab} onChange={(id) => setTab(String(id))}>
